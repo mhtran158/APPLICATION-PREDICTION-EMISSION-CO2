@@ -12,10 +12,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.preprocessing import StandardScaler
 import joblib
-from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 import streamlit as st
-
+from sklearn.preprocessing import OneHotEncoder
 
 st.title("Application de prévision des émissions de CO2")    
     
@@ -82,7 +81,7 @@ cat_test = X_test[cat]
 
 # Encodage des variables catégorielles
 
-from sklearn.preprocessing import OneHotEncoder
+
 
 encoder = OneHotEncoder() # creation de 'encoder' un objet OneHotEncoder
 
@@ -109,6 +108,14 @@ num_test_scaled_df = pd.DataFrame(num_test_scaled_array, columns=sc.get_feature_
 
 X_train_new = pd.concat([num_train_scaled_df, one_cat_train_df.set_index(num_train_scaled_df.index)], axis=1)
 X_test_new = pd.concat([num_test_scaled_df, one_cat_test_df.set_index(num_test_scaled_df.index)], axis=1)
+
+from sklearn.ensemble import RandomForestRegressor     
+random_forest = RandomForestRegressor(n_estimators=100, random_state=42)
+random_forest.fit(X_train_new, y_train)
+
+# Joblib permet d'entraîner le modèle rapidement sans attendre dans streamlit:
+import joblib
+joblib.dump(random_forest,"model_rf")
 
 
 def user_input():   
@@ -140,8 +147,6 @@ CO2_input.head()
 donnee_entree=pd.concat([input_df,CO2_input], axis=0)
 donnee_entree.head()
 donnee_entree.info()
-
-#num = ['masse', 'cylindrée', 'puissance', 'dimension', 'autonomie_électrique'] 
 
 num = ['Poids (kg)', 'Cylindrée (cm3)', 'Puissance (ch)', 'Dimension (mm)', 'Autonomie electrique (km)']
 
