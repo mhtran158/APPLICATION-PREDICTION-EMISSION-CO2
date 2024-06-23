@@ -2,14 +2,12 @@
 """
 Created on Thu Jun 20 15:44:14 2024
 
-@author: chau
+@author: minh
 """
 
 import pandas as pd
-import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeRegressor
 from sklearn.preprocessing import StandardScaler
 import joblib
 from sklearn.ensemble import RandomForestRegressor
@@ -197,5 +195,11 @@ st.markdown(
     """,
     unsafe_allow_html=True
  )
-    
+if st.checkbox('**Equivalence**'):
+   from PIL import Image
+image = Image.open("residu.jpg")
+
+image = image.resize((200, 300))  
+
+st.image(image)    
 
